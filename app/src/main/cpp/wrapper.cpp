@@ -4,7 +4,7 @@
 
 extern "C" JNIEXPORT jbyteArray JNICALL Java_com_example_newestnanoapp_MainActivity_sign(JNIEnv *env, jobject thiz, jbyteArray messageJava, jbyteArray privateKeyJava, jbyteArray publicKeyJava)
 {
-    int LEN = 64; // UPDATE THIS WITH SIG LEN INGO
+    int LEN = 64;
 
     int msgLen = 0;
     unsigned char* signature = NULL;
