@@ -72,7 +72,7 @@ byte[1] and on: The rest of the invoice bytes
 The box keeps sending the byte 0x03.  
 > App reply: If the customer chooses to pay, the app replies with the signature for this packet.  
   
-### Step 4: The result:  
+### Step 4: The result   
   
 The result might not always come back immediately. Proof of Work is being generated since Step 1, but might take a bit longer and the customer could have already paid and moved his phone away from the nfc reader by then. However most of the time the box should be able to reply with a final result. If the box gets to send a final result, it looks like this:  
   
