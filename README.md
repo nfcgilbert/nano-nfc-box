@@ -48,7 +48,7 @@ byte[8]+[9]: start of the exchange rate inside the byte array (1 Nano to x local
 This is followed by:  
 32 bytes for the public key of the box/invoice address.  
 32 bytes for the previous block hash of the customer's account  
-32 bytes for the representative of the app/customer's account  
+32 bytes for the representative of the app/customer's account (also public key)  
   
 Followed by:  
 Bytes of variable length for the raw balance, the requested amount, the shop name, the local currency, and the exchange rate. Their start indexes are defined in the beginning of the array as described above.  
