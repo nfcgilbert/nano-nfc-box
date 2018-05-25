@@ -31,8 +31,6 @@ See also: ISO 7816 Part 4
 
 5. The box resends requests/messages if a return message does not have the expected format.
 
-6. Critical things like the wallet ID or private keys are never exchanged, therefore paying will be safe. Signing on the phone is very fast thanks to using a C library.
-
 ## The protocol:
 
 ### Step 1: The box first requests the xrb_ account of the app/customer by sending the byte 0x04.
