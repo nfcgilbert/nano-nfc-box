@@ -56,16 +56,13 @@ Bytes of variable length for the raw balance, the requested amount, the shop nam
 The whole invoice packet looks like this:  
   
 -- Case 1 (invoice <= 252 bytes)  
-  
 byte[0] = 0x01  
 byte[1]+[2] = the length of the following bytes  
 byte[3] and on = the invoice  
 > App reply: The length of the message bytes (up to 252)  
   
 -- Case 2 (invoice > 252 bytes)  
-  
-The same as above, but there is a second packet:  
-  
+The same as above, but there is a second packet: 
 byte[0] = 0x02  
 byte[1] and on: The rest of the invoice bytes  
 > App reply: The length of the followup message bytes (up to 254)  
