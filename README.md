@@ -39,11 +39,11 @@ See also: ISO 7816 Part 4
 ### Step 2: The box sends the invoice. It contains everything the app needs in order to display the invoice properly and create the signature to authorise the payment.  
 
 The invoice byte array is structured like this:  
-bytes[0]+[1]: start of the raw balance of the customer's account before the transaction (in RAW) inside the byte array  
-bytes[2]+[3]: start of the requested amount (in Nano such as shown in the block explorer) inside the byte array  
-bytes[4]+[5]: start of the shop name inside the byte array  
-bytes[6]+[7]: start of the local currency (EUR, USD, CAD, etc.) inside the byte array  
-bytes[8]+[9]: start of the exchange rate inside the byte array (1 Nano to x local currency)  
+byte[0]+[1]: start of the raw balance of the customer's account before the transaction (in RAW) inside the byte array  
+byte[2]+[3]: start of the requested amount (in Nano such as shown in the block explorer) inside the byte array  
+byte[4]+[5]: start of the shop name inside the byte array  
+byte[6]+[7]: start of the local currency (EUR, USD, CAD, etc.) inside the byte array  
+byte[8]+[9]: start of the exchange rate inside the byte array (1 Nano to x local currency)  
   
 This is followed by:  
 32 bytes for the public key of the box/invoice address.  
