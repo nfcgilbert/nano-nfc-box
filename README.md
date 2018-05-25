@@ -74,7 +74,7 @@ The box keeps sending the byte 0x03.
   
 ### Step 4: The result:  
   
-The result will not always come back immediately. Proof of Work might take a bit longer and the customer could have already moved his phone away from the nfc reader by then. If the box gets to send a final result, it looks like this:  
+The result might not always come back immediately. Proof of Work is being generated since Step 1, but might take a bit longer and the customer could have already paid and moved his phone away from the nfc reader by then. If the box gets to send a final result, it looks like this:  
   
 byte[0] = 0x06  
 byte[1] = Length of the message // Remark: This byte might appear pointless at first. But it serves to check if the message has been fully received so the app can instead display that it received a garbled result instead of displaying something wrong such as a new wrong balance.  
