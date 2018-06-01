@@ -264,6 +264,11 @@ public class CardService extends HostApduService {
                 }
             }
 
+            if(messageBytes.length==1 && messageBytes[0]==IncomingRequestHeaders.SIGNED_PACKET_RECEIVED_OK)
+            {
+                printMessage("You have authorized the payment.");
+            }
+
             if (messageBytes[0]==IncomingRequestHeaders.INCOMING_INVOICE_FOLLOWUP)
             {
                 Log.w(TAG, "...Spotted invoice followup...");
