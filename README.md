@@ -71,6 +71,7 @@ byte[1] and on: The rest of the invoice bytes
   
 The box keeps sending the byte 0x03.  
 > App reply: If the customer chooses to pay, the app replies with the signature for this packet.  
+> The box then sends 0x13 to the app to let it know that it successfully received the signature.
   
 ### Step 4: The result   
   
