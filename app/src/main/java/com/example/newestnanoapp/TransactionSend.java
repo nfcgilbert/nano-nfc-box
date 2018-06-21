@@ -96,6 +96,8 @@ public class TransactionSend extends Transaction
 
         byte[] digested = blake.digest();
 
+        Log.w("hash", DataManipulationUtil.bytesToHex(digested));
+
         // This is noble. It signs using a C library called Monocypher. Verrrry fast.
         byte[] signature = MainActivity.thisMainActivity.signPublic(digested, CardService.HexStringToByteArray(AccountDataContainer.privateKey),
                 addressToPublicKey(AccountDataContainer.account));
@@ -146,21 +148,6 @@ public class TransactionSend extends Transaction
 
         return null;
     }
-/*
-    public static String getBlockHash(String previous, String sender, BigInteger balance, String representative, String link)
-    {
-        return DataManipulationUtil.bytesToHex(createHash(previous, sender, balance, representative, link));
-    }
-
-    static byte[] toByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i + 1), 16));
-        }
-        return data;
-    }*/
 
     static String radix(BigInteger value) {
         return leftPad(value.toString(16).toUpperCase(), 32);
@@ -177,20 +164,6 @@ public class TransactionSend extends Transaction
         }
         return builder.append(str).toString();
     }
-    /*
-    public static byte[] createHash(String previous, String sender, BigInteger amount, String representative, String destinationAddress)
-    {
-        final Blake2b blake = Blake2b.Digest.newInstance(32);
-        blake.update(DataManipulationUtil.hexStringToByteArray(STATE_BLOCK_PREAMBLE));
-        blake.update(addressToPublicKey(sender)); // ok
-        blake.update(DataManipulationUtil.hexStringToByteArray(previous));
-        blake.update(addressToPublicKey(representative));
-        blake.update(DataManipulationUtil.hexStringToByteArray(leftPad(radix(amount),32)));
-        blake.update(addressToPublicKey(destinationAddress));
-
-        byte[] digested = blake.digest();
-        return digested;
-    }*/
 
     // Never actually used
     @Override

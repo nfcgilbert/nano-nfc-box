@@ -45,16 +45,16 @@ public class ByteInvoice
         int startLocalCurr = ((invoiceData[6] & 0xff) << 8) | (invoiceData[7] & 0xff);
         int startExchangeRate = ((invoiceData[8] & 0xff) << 8) | (invoiceData[9] & 0xff);
 
-        Log.w("+++startRawBalance", ""+startRawBalance);
+        /*Log.w("+++startRawBalance", ""+startRawBalance);
         Log.w("+++startSendAmount", ""+startSendAmount);
         Log.w("+++startShopName", ""+startShopName);
         Log.w("+++startLocalCurr", ""+startLocalCurr);
-        Log.w("+++startExchangeRate", ""+startExchangeRate);
+        Log.w("+++startExchangeRate", ""+startExchangeRate);*/
 
         byte[] pubKeyBoxByteConverted = new byte[32];
         System.arraycopy(invoiceData, 10, pubKeyBoxByteConverted, 0, 32);
         boxAddress = Account.publicKeyToXRBAddress(pubKeyBoxByteConverted);
-        Log.w("++boxAddress++", boxAddress);
+        //Log.w("++boxAddress++", boxAddress);
 
         byte[] previousBlockByteConverted = new byte[32];
         System.arraycopy(invoiceData, 42, previousBlockByteConverted, 0, 32);

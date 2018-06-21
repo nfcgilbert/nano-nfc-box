@@ -22,6 +22,7 @@ public class IncomingRequestHeaders
     public static byte ACCOUNT_REQUEST                  = 0x04;
     public static byte PAYMENT_DECISION_PAY             = 0x05;
     public static byte FINAL_RESULT_HEADER              = 0x06;
+    public static byte SIGNED_PACKET_RECEIVED_OK        = 0x13;
 
     public static byte SEND_AGAIN                       = 0x11;
     public static byte PAYMENT_DECISION_UNDECIDED       = 0x12;

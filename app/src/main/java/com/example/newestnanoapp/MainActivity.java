@@ -47,16 +47,6 @@ public class MainActivity extends AppCompatActivity
         }
         return new String(hexChars);
     }
-/*
-    public static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -97,16 +87,7 @@ public class MainActivity extends AppCompatActivity
     {
         initialiseGUIElements();
     }
-/*
-    public static SharedPreferences getSharedPreferencesForeign()
-    {
-        return thisMainActivity.getSharedPreferences("app_preferences", MODE_PRIVATE);
-    }*/
-    /*
-    public static Intent getIntentForeign()
-    {
-        return thisMainActivity.getIntent();
-    }*/
+
 
     public void printMessage(String msg)
     {
@@ -178,19 +159,22 @@ public class MainActivity extends AppCompatActivity
         {
             public void onClick(View v)
             {
-                Log.w("CLICK", "CLICKED BUTTON");
-
+                // Log.w("CLICK", "CLICKED BUTTON");
+                // Log.w("TTTTT 1", currentInvoice.spendAmountNANO);
                 BigInteger rawSpendAmount = new BigInteger( turnNANOAmountIntoRAW(String.valueOf(currentInvoice.spendAmountNANO)));
+                // Log.w("TTTTT 2", rawSpendAmount.toString());
                 BigInteger oldAmount = currentInvoice.rawBalanceBefore;
+                // Log.w("TTTTT 3", oldAmount.toString());
                 BigInteger newRaw = oldAmount.subtract(rawSpendAmount);
+                // Log.w("TTTTT 3", newRaw.toString());
 
-                if(newRaw.compareTo(BigInteger.valueOf(0))>=0 || true)
+                if(newRaw.compareTo(BigInteger.valueOf(0))>=0)
                 {
                     TransactionSend txSend = new TransactionSend(currentInvoice.previousBlock, null, currentInvoice.boxAddress, newRaw, currentInvoice.appRepAddress, AccountDataContainer.account);
                     String signatureString = txSend.signature;
                     CardService.signatureForBox = DataManipulationUtil.hexStringToByteArray(txSend.signature);
                     MainActivity.currentInvoice.paymentDecisionStatus = IncomingRequestHeaders.PAYMENT_DECISION_PAY;
-                    Log.w("Signature", signatureString);
+                 //   Log.w("Signature", signatureString);
                     printMessage("Move your phone over the reader to pay");
                 }
                 else

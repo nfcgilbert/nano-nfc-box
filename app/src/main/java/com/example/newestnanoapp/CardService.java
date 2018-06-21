@@ -58,10 +58,6 @@ import android.util.Log;
  */
 public class CardService extends HostApduService {
     private static final String TAG = "CardService";
-    // AID for our loyalty card service.
-   // private static final String SAMPLE_LOYALTY_CARD_AID = "F222222222";
-    // ISO-DEP command HEADER for selecting an AID.
-    // Format: [Class | Instruction | Parameter 1 | Parameter 2]
     private static final String SELECT_APDU_HEADER = "00A40400";
 
    // private static final String SELECT_APDU_HEADER = "13A47431";
@@ -116,63 +112,6 @@ public class CardService extends HostApduService {
      * at this point.
      */
 
-    /*
-     * Unsigned send packet contains the new balance after the transaction as a hex number
-     */
-    /*
-    public static BigInteger extractOldAmountRaw(String unsignedPacket)
-    {
-        int indexStart = unsignedPacket.indexOf(":ob")+4;
-        String stringAfterBalance = unsignedPacket.substring(indexStart);
-        int indexEnd = stringAfterBalance.indexOf(",");
-        String amountString = stringAfterBalance.substring(0, indexEnd);
-        //Log.i("amountString", amountString);
-        BigInteger newRaw = new BigInteger(amountString, 10);
-        return newRaw;
-    }
-
-    public static String extractPreviousBlockHash(String unsignedPacket)
-    {
-        int indexStart = unsignedPacket.indexOf(":pb")+4;
-        String stringAfterBalance = unsignedPacket.substring(indexStart);
-        int indexEnd = stringAfterBalance.indexOf(",");
-        String blockHashString = stringAfterBalance.substring(0, indexEnd);
-        return blockHashString;
-    }
-
-    public static String extractOwnWalletRepresentative(String unsignedPacket)
-    {
-        int indexStart = unsignedPacket.indexOf(":re")+4;
-        String stringAfterBalance = unsignedPacket.substring(indexStart);
-        int indexEnd = stringAfterBalance.indexOf(",");
-        String blockHashString = stringAfterBalance.substring(0, indexEnd);
-        //Log.w("EXTR", blockHashString);
-        return blockHashString;
-    }
-
-    public static String extractDestinationAddress(String unsignedPacket)
-    {
-        int indexStart = unsignedPacket.indexOf(":da")+4;
-        String stringAfterBalance = unsignedPacket.substring(indexStart);
-        int indexEnd = stringAfterBalance.indexOf(",");
-        String blockHashString = stringAfterBalance.substring(0, indexEnd);
-        return blockHashString;
-    }
-
-    public static String extractSendAmount(String unsignedPacket)
-    {
-        int indexStart = unsignedPacket.indexOf(":sa")+4;
-        String stringAfterBalance = unsignedPacket.substring(indexStart);
-        int indexEnd = stringAfterBalance.indexOf("#");
-        String sendAmount = stringAfterBalance.substring(0, indexEnd);
-        Log.w("sendAmount", sendAmount);
-        return sendAmount;
-    }*/
-
-    /*
-     * returns true if 2nd byte is CA, otherwise false
-     * rephrased: it returns false if this is the apdu login command, otherwise true
-     */
     private boolean isMessage(byte[] inByte)
     {
         if(inByte[1]== (byte)0xCA)
@@ -219,12 +158,19 @@ public class CardService extends HostApduService {
             {
                 messageBytes = getMessageBytes(commandApdu);
                 if((messageBytes!=null && messageBytes.length>0))
+                {
                     Log.w(TAG, "Received bytes: " + messageBytes.length);
+                    Log.w(TAG, new String(messageBytes, "ASCII"));
+                }
                 else
                     return new byte[] { (byte)0x90, (byte)0x00 };
             } catch (Exception ex) {
                 Log.w("Error", "error", ex);
             }
+        }
+        else
+        {
+            Log.w(TAG, "Received bytes: " + commandApdu.length);
         }
 
         if(messageBytes==null || messageBytes.length==0 || Arrays.equals(commandApdu, loginByteArray))
@@ -253,8 +199,10 @@ public class CardService extends HostApduService {
 
                     if(invoiceArray.length == invoiceLength)
                     {
+                       // Log.w(TAG, "--- create invoice");
                         createInvoice();
                     }
+                   // Log.w(TAG, "--- invoice messageBytes.length = "+messageBytes.length);
                     returnBytes = intToByteArray(messageBytes.length);
                 }
                 catch(Exception e)
@@ -264,9 +212,14 @@ public class CardService extends HostApduService {
                 }
             }
 
+            if(messageBytes.length==1 && messageBytes[0]==IncomingRequestHeaders.SIGNED_PACKET_RECEIVED_OK)
+            {
+                printMessage("You have authorized the payment.");
+            }
+
             if (messageBytes[0]==IncomingRequestHeaders.INCOMING_INVOICE_FOLLOWUP)
             {
-                Log.w(TAG, "...Spotted invoice followup...");
+              //  Log.w(TAG, "...Spotted invoice followup...");
                 int remainingBytes = invoiceArray.length - invoiceArrayCurrentIndex;
                 System.arraycopy(messageBytes, 1, invoiceArray, invoiceArrayCurrentIndex, messageBytes.length-1);
 
@@ -312,12 +265,16 @@ public class CardService extends HostApduService {
 
             if (messageBytes[0]==IncomingRequestHeaders.SIGNED_PACKET_REQUEST) // is a request for the user's decision where to pay or not
             {
+              //  Log.w(TAG, "signed packet request 1");
                 if (MainActivity.currentInvoice != null)
                 {
+                   // Log.w(TAG, "signed packet request 2");
                     if (MainActivity.currentInvoice.paymentDecisionStatus==IncomingRequestHeaders.PAYMENT_DECISION_PAY)
                     {
+                      //  Log.w(TAG, "signed packet request 3");
                         if(signatureForBox!=null)
                         {
+                         //   Log.w(TAG, "signed packet request 4");
                             returnBytes = signatureForBox;
                         }
                     }
@@ -351,12 +308,6 @@ public class CardService extends HostApduService {
 
         MainActivity.currentInvoice = invoice;
         double amount_local_curr_rounded = Math.round(invoice.localCurrAmount*100.0)/100.0;
-
-        /*
-        DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        df.setMaximumFractionDigits(340); // 340 = DecimalFormat.DOUBLE_FRACTION_DIGITS
-        System.out.println(df.format(invoice.localCurrAmount));*/
-
         String localCurrAmountFormatted = String.format("%.2f", amount_local_curr_rounded).replace(',', '.');
 
         // Attention please: In other to enable the PAY button, the string passed to printMessage currently needs to start with "Request:"

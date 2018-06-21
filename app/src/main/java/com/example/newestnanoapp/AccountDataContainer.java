@@ -16,6 +16,7 @@ package com.example.newestnanoapp;
 
 public class AccountDataContainer
 {
-    public static String privateKey = "privateKey here - not seed"; // needs your details here
-    public static String account = "xrb_ address here"; // and here
+    public static String privateKey = "-"; // needs your details here
+    public static String account = "xrb_"; // and here
+
 }

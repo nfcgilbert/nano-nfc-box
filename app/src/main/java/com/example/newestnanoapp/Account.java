@@ -41,11 +41,7 @@ public final class Account {
 			ACCOUNT_BIN_TABLE.put(ACCOUNT_MAP[i], bin);
 		}
 	}
-	/*
-	public Account(byte[] seed, String defaultRep) {
-		this(seed, defaultRep, null);
-	}
-	*/
+
 	public Account(byte[] seed, String defaultRep, ArrayList<Boolean> addressIndex) {
 		this.seed = seed;
 		this.defaultRep = defaultRep;
@@ -67,15 +63,6 @@ public final class Account {
 			}
 		}
 	}
-	/*
-	public ArrayList<Boolean> getShouldGenerateAddressIndex() {
-		ArrayList<Boolean> shouldGenIndex = new ArrayList<Boolean>();
-		for (int i = 0; i < this.addresses.size(); i++) {
-			boolean shouldGen = this.addresses.get(i) != null;
-			shouldGenIndex.add(i, shouldGen);
-		}
-		return shouldGenIndex;
-	}*/
 	
 	public void addAddress(int index) {
 		if (index >= this.addresses.size()) {
@@ -92,37 +79,7 @@ public final class Account {
 		this.addresses.remove(index);
 		this.addresses.add(index, null);
 	}
-	/*
-	public Address getAddressAtIndex(int index) {
-		return this.addresses.get(index);
-	}
-	
-	public boolean isAddressAtIndex(int index) {
-		if (index >= this.addresses.size())
-			return false;
-		return this.addresses.get(index) != null;
-	}*/
-	/*
-	public int getMaxAddressIndex() {
-		return this.addresses.size();
-	}
-	*/
-	/*
-	public byte[] getSeed() {
-		return this.seed;
-	}
-	*/
-	/**
-	 * Gets an address for a given index. The majority of the times this method
-	 * will be called, index will be zero as thats what is used for the first
-	 * address. If a second address is made, the index *should* be one, so a
-	 * different Address is returned (but both are generated from the same
-	 * account seed).
-	 * 
-	 * @param index The index to get the address from
-	 * @return The Address corresponding to the given index, or null if the
-	 * passed index was invalid
-	 */
+
 	private Address getAddressForIndex(int index) {
 		//iirc the reference spec uses an unsigned int
 		if (index < 0)
