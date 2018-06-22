@@ -26,4 +26,5 @@ public class IncomingRequestHeaders
 
     public static byte SEND_AGAIN                       = 0x11;
     public static byte PAYMENT_DECISION_UNDECIDED       = 0x12;
+    public static byte SIGNED_PACKET_RECEIVED_OK        = 0x13;
 }
